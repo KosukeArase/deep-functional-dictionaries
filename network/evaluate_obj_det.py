@@ -31,6 +31,8 @@ def compute_all_IoU(sess, net, data):
     assert(S_to_L.shape[0] == data.n_data)
     assert(S_to_L.shape[1] == data.n_seg_ids)
 
+    print("P.shape, S.shape, S_mask.shape, S_to_L.shape", P.shape, S.shape, S_mask.shape, S_to_L.shape)
+
     IoU = predict_IoU(P, S, sess, net)
     assert(IoU.shape[0] == data.n_data)
     assert(IoU.shape[1] == data.n_seg_ids)
@@ -67,6 +69,7 @@ def collect_labels_and_max_IoUs(S_mask, S_to_L, IoU):
     labels = np.array(labels, dtype=int)
     max_IoUs = np.array(max_IoUs)
     dict_ids = np.array(dict_ids, dtype=int)
+    print("labels, max_IoUs, dict_ids", labels.shape, max_IoUs.shape, dict_ids.shape)
 
     return labels, max_IoUs, dict_ids
 
@@ -115,6 +118,9 @@ def evaluate(sess, net, data, out_dir):
             S_mask, S_to_L, IoU)
 
     # Save files.
+    np.save(os.path.join(out_dir, 'point_clouds.npy'), P)
+    print("Saved '{}'.".format(os.path.join(out_dir, 'point_clouds.npy')))
+
     np.save(os.path.join(out_dir, 'S_mask.npy'), S_mask)
     print("Saved '{}'.".format(os.path.join(out_dir, 'S_mask.npy')))
 
@@ -136,10 +142,10 @@ def evaluate(sess, net, data, out_dir):
 
     # Compute results.
     outputs = {}
-
     outputs = evaluate_proposal_recall(labels, max_IoUs, outputs)
 
     # Save results.
+    print(outputs)
     print(json.dumps(outputs, sort_keys=True, indent=2))
     out_file = os.path.join(out_dir, 'evaluation.json')
     with open(out_file, 'w') as f:

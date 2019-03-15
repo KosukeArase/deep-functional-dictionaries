@@ -162,7 +162,6 @@ def run(args, train_data, val_data, test_data):
                 f.write(msg + '\n')
             print("Saved '{}'.".format(out_file))
         """
-
         if args.exp_type == 'ours':
             if 'eval' in args.eval_type:
                 evaluate.evaluate(sess, net, test_data, args.out_dir)
