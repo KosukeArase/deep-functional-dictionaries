@@ -95,7 +95,7 @@ def evaluate_proposal_recall(labels, max_IoUs, outputs, IoU_tol_list=None):
             label_max_IoUs = max_IoUs[idxs]
             n_tp = np.sum(label_max_IoUs > IoU_tol)
 
-            outputs['Category recall with threshold'][IoU_tol][label] = \
+            outputs['Category recall with threshold'][IoU_tol][str(label)] = \
                     float(n_tp) / float(n_total)
 
         n_total = max_IoUs.size

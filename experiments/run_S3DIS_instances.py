@@ -4,9 +4,10 @@
 
 import os, sys
 BASE_DIR = os.path.normpath(
-        os.path.join(os.path.dirname(os.path.abspath(__file__))))
-sys.path.append(os.path.join(BASE_DIR, '..'))
-sys.path.append(os.path.join(BASE_DIR, '..', 'network'))
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+sys.path.append(os.path.join(BASE_DIR))
+sys.path.append(os.path.join(BASE_DIR, 'network'))
+sys.path.append(os.path.join(BASE_DIR, 'datasets'))
 
 from global_variables import *
 from datasets import *
@@ -89,11 +90,13 @@ if __name__ == '__main__':
 
     # Create data.
     # NOTE: Added an option for part removal.
-    train_data = S3DIS_instances.create_dataset(
-            args.exp_type, args.batch_size, 'train')
-
     test_data = S3DIS_instances.create_dataset(
             args.exp_type, args.batch_size, 'test')
+    if args.train:
+        train_data = S3DIS_instances.create_dataset(
+            args.exp_type, args.batch_size, 'train')
+    else:
+        train_data = test_data
 
     '''
     if args.part_removal_fraction > 0.:

@@ -144,7 +144,7 @@ def run(args, train_data, val_data, test_data):
                     validation_epoch=args.validation_epoch,
                     model_dir=args.out_model_dir, log_dir=args.log_dir,
                     data_name=train_data.name, output_generator=None)
-
+        """
         train_loss, _ = validate(sess, net, args.exp_type, train_data)
         test_loss, _ = validate(sess, net, args.exp_type, test_data)
 
@@ -161,6 +161,7 @@ def run(args, train_data, val_data, test_data):
             with open(out_file, 'w') as f:
                 f.write(msg + '\n')
             print("Saved '{}'.".format(out_file))
+        """
 
         if args.exp_type == 'ours':
             if 'eval' in args.eval_type:

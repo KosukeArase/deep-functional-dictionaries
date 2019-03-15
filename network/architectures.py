@@ -6,7 +6,7 @@ BASE_DIR = os.path.normpath(
         os.path.join(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(BASE_DIR, 'utils'))
 
-from pointnet_util import pointnet_sa_module, pointnet_fp_module
+# from pointnet_util import pointnet_sa_module, pointnet_fp_module
 from transform_nets import *
 import tensorflow as tf
 import tf_util
@@ -119,7 +119,7 @@ def build_pointnet_seg(X, out_dim, is_training, bn_decay, scope, use_stn=True):
 
     return net, stn_loss
 
-
+"""
 def build_pointnet2_seg(X, out_dim, is_training, bn_decay, scope):
     n_points = X.get_shape()[1].value
 
@@ -164,7 +164,7 @@ def build_pointnet2_seg(X, out_dim, is_training, bn_decay, scope):
             scope='fc2')
 
     return net, 0
-
+"""
 
 def residual_block(X, out_dim, is_training, bn_decay, scope):
     n_dim = X.get_shape()[2].value

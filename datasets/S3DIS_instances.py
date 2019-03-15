@@ -14,9 +14,8 @@ import numpy as np
 
 
 def create_dataset(exp_type, batch_size, split_name):
-    hdf5_file_list_txt = os.path.join(g_S3DIS_dir,
-            '{}_hdf5_file_list.txt'.format(split_name))
-    assert(os.path.exists(hdf5_file_list_txt))
+    hdf5_file_list_txt = os.path.join("data", '{}_hdf5_file_list.txt'.format(split_name))
+    assert os.path.exists(hdf5_file_list_txt), hdf5_file_list_txt
 
     with open(hdf5_file_list_txt, 'r') as f:
         hdf5_file_list = f.read().splitlines()
