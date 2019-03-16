@@ -231,7 +231,7 @@ class Dataset(object):
         return self
 
 
-    def next(self):
+    def __next__(self):
         self.start = self.index_in_epoch * self.batch_size
 
         # FIXME:
