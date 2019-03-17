@@ -7,7 +7,6 @@ BASE_DIR = os.path.normpath(
         os.path.join(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(BASE_DIR, '..'))
 
-from global_variables import *
 from datasets import *
 from datetime import datetime
 from generate_outputs import *

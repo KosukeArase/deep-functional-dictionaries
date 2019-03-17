@@ -9,7 +9,6 @@ sys.path.append(os.path.join(BASE_DIR))
 sys.path.append(os.path.join(BASE_DIR, 'network'))
 sys.path.append(os.path.join(BASE_DIR, 'datasets'))
 
-from global_variables import *
 from datasets import *
 from main import run
 import argparse
@@ -23,6 +22,7 @@ parser.add_argument('--eval_type', action='append', default=['eval_obj_det'])
 
 parser.add_argument('--net_options', action='append', default=['softmax', 'clip_A'])
 
+parser.add_argument('--dataset_dir', type=str, required=True, help='Directory where h5 files are stored')
 parser.add_argument('--in_model_dirs', type=str, default='', help='')
 parser.add_argument('--in_model_scopes', type=str, default='', help='')
 parser.add_argument('--out_model_dir', type=str, default='model', help='')
@@ -91,10 +91,10 @@ if __name__ == '__main__':
     # Create data.
     # NOTE: Added an option for part removal.
     test_data = S3DIS_instances.create_dataset(
-            args.exp_type, args.batch_size, 'test')
+            args.exp_type, args.batch_size, 'test', args.dataset_dir)
     if args.train:
         train_data = S3DIS_instances.create_dataset(
-            args.exp_type, args.batch_size, 'train')
+            args.exp_type, args.batch_size, 'train', args.dataset_dir)
     else:
         train_data = test_data
 

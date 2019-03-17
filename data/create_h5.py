@@ -89,8 +89,8 @@ def room2blocks(data, label, inslabel, num_point, block_size=1.0, stride=1.0,
     xbeg_list = []
     ybeg_list = []
     if not random_sample:
-        num_block_x = int(np.ceil((limit[0] - block_size) / stride)) + 1
-        num_block_y = int(np.ceil((limit[1] - block_size) / stride)) + 1
+        num_block_x = np.maximum(int(np.ceil((limit[0] - block_size) / stride)) + 1, 1)
+        num_block_y = np.maximum(int(np.ceil((limit[1] - block_size) / stride)) + 1, 1)
         for i in range(num_block_x):
             if i % 2 == 0:
                 for j in range(num_block_y):

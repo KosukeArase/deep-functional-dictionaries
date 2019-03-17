@@ -7,13 +7,12 @@ BASE_DIR = os.path.normpath(
 sys.path.append(os.path.join(BASE_DIR, '..'))
 sys.path.append(os.path.join(BASE_DIR, 'utils'))
 
-from global_variables import *
 from dataset import Dataset
 import h5py
 import numpy as np
 
 
-def create_dataset(exp_type, batch_size, split_name):
+def create_dataset(exp_type, batch_size, split_name, g_S3DIS_dir):
     hdf5_file_list_txt = os.path.join("data", '{}_hdf5_file_list.txt'.format(split_name))
     assert os.path.exists(hdf5_file_list_txt), hdf5_file_list_txt
 
