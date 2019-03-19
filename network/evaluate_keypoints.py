@@ -6,7 +6,7 @@ BASE_DIR = os.path.normpath(
         os.path.join(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(BASE_DIR, '..'))
 
-from datasets import *
+from datasets import dataset, S3DIS_instances
 from generate_outputs import *
 from scipy.optimize import linear_sum_assignment
 #import matplotlib.pyplot as plt

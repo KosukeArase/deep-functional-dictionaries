@@ -83,8 +83,10 @@ def predict_IoU(P, S, sess, net):
     assert(len(S) == n_data)
     n_batches_in_epoch = int(math.ceil(float(n_data) / net.batch_size))
     IoU = None
+    A = None
 
     for index_in_epoch in range(n_batches_in_epoch):
+        print(index_in_epoch, "/", n_batches_in_epoch)
         start = index_in_epoch * net.batch_size
         end = min(start + net.batch_size, n_data)
         n_step_size = end - start
@@ -104,17 +106,20 @@ def predict_IoU(P, S, sess, net):
             S_dummy_shape[0] = net.batch_size - n_step_size
             step_S = np.vstack((step_S, np.zeros(S_dummy_shape)))
 
-        step_IoU = sess.run(net.IoU, feed_dict={
+        step_IoU, step_A = sess.run([net.IoU, net.A], feed_dict={
             net.P: step_P, net.S: step_S, net.is_training: False})
 
         # NOTE:
         # Remove dummy data.
         step_IoU = step_IoU[:n_step_size]
+        step_A = step_A[:n_step_size]
 
         if index_in_epoch == 0:
             IoU = step_IoU
+            A = step_A
         else:
             IoU = np.vstack((IoU, step_IoU))
+            A = np.vstack((A, step_A))
 
-    return IoU
+    return IoU, A
 

@@ -6,7 +6,7 @@ BASE_DIR = os.path.normpath(
         os.path.join(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(BASE_DIR, '..'))
 
-from datasets import *
+from datasets import dataset, S3DIS_instances
 from generate_outputs import *
 from scipy.optimize import linear_sum_assignment
 import json
@@ -33,12 +33,12 @@ def compute_all_IoU(sess, net, data):
 
     print("P.shape, S.shape, S_mask.shape, S_to_L.shape", P.shape, S.shape, S_mask.shape, S_to_L.shape)
 
-    IoU = predict_IoU(P, S, sess, net)
+    IoU, A = predict_IoU(P, S, sess, net)
     assert(IoU.shape[0] == data.n_data)
     assert(IoU.shape[1] == data.n_seg_ids)
     assert(IoU.shape[2] == net.K)
 
-    return P, S_mask, S_to_L, IoU
+    return P, S_mask, S_to_L, IoU, A
 
 
 def collect_labels_and_max_IoUs(S_mask, S_to_L, IoU):
@@ -51,6 +51,7 @@ def collect_labels_and_max_IoUs(S_mask, S_to_L, IoU):
     dict_ids = []
 
     for k in range(n_data):
+        print(k, "/", n_data)
         assert(K >= np.sum(S_mask[k]))
 
         for i in range(n_seg_ids):
@@ -112,14 +113,20 @@ def evaluate_proposal_recall(labels, max_IoUs, outputs, IoU_tol_list=None):
 def evaluate(sess, net, data, out_dir):
     if not os.path.exists(out_dir): os.makedirs(out_dir)
 
-    P, S_mask, S_to_L, IoU = compute_all_IoU(sess, net, data)
+    P, S_mask, S_to_L, IoU, A = compute_all_IoU(sess, net, data)
 
     labels, max_IoUs, dict_ids = collect_labels_and_max_IoUs(
             S_mask, S_to_L, IoU)
 
     # Save files.
+    np.save(os.path.join(out_dir, 'seg_ids.npy'), data.seg_ids)
+    print("Saved '{}'.".format(os.path.join(out_dir, 'seg_ids.npy')))
+
     np.save(os.path.join(out_dir, 'point_clouds.npy'), P)
     print("Saved '{}'.".format(os.path.join(out_dir, 'point_clouds.npy')))
+
+    np.save(os.path.join(out_dir, 'dictionaries.npy'), A)
+    print("Saved '{}'.".format(os.path.join(out_dir, 'dictionaries.npy')))
 
     np.save(os.path.join(out_dir, 'S_mask.npy'), S_mask)
     print("Saved '{}'.".format(os.path.join(out_dir, 'S_mask.npy')))

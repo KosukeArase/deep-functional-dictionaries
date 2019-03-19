@@ -9,7 +9,7 @@ sys.path.append(os.path.join(BASE_DIR))
 sys.path.append(os.path.join(BASE_DIR, 'network'))
 sys.path.append(os.path.join(BASE_DIR, 'datasets'))
 
-from datasets import *
+from datasets import dataset, S3DIS_instances
 from main import run
 import argparse
 
