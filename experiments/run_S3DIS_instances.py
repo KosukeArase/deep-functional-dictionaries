@@ -23,6 +23,7 @@ parser.add_argument('--eval_type', action='append', default=['eval_obj_det'])
 parser.add_argument('--net_options', action='append', default=['softmax', 'clip_A'])
 
 parser.add_argument('--dataset_dir', type=str, required=True, help='Directory where h5 files are stored')
+parser.add_argument('--dataset', type=str, default="S3DIS", choices=["S3DIS", "ScanNet"], help='Name of dataset')
 parser.add_argument('--in_model_dirs', type=str, default='', help='')
 parser.add_argument('--in_model_scopes', type=str, default='', help='')
 parser.add_argument('--out_model_dir', type=str, default='model', help='')
@@ -51,8 +52,7 @@ args = parser.parse_args()
 
 if __name__ == '__main__':
     # Set root directory.
-    root_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)),
-            'S3DIS')
+    root_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), args.dataset)
 
     if args.exp_type == 'ours':
         root_dir += '_{:d}'.format(args.K)

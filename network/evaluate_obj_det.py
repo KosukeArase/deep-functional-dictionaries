@@ -6,7 +6,7 @@ BASE_DIR = os.path.normpath(
         os.path.join(os.path.dirname(os.path.abspath(__file__))))
 sys.path.append(os.path.join(BASE_DIR, '..'))
 
-from datasets import dataset, S3DIS_instances
+from datasets import dataset
 from generate_outputs import *
 from scipy.optimize import linear_sum_assignment
 import json
@@ -118,6 +118,9 @@ def evaluate(sess, net, data, out_dir):
     labels, max_IoUs, dict_ids = collect_labels_and_max_IoUs(
             S_mask, S_to_L, IoU)
 
+    arg_max = np.argmax(A, axis=2)
+    print(arg_max.shape, A.shape)
+
     # Save files.
     np.save(os.path.join(out_dir, 'seg_ids.npy'), data.seg_ids)
     print("Saved '{}'.".format(os.path.join(out_dir, 'seg_ids.npy')))
@@ -125,8 +128,8 @@ def evaluate(sess, net, data, out_dir):
     np.save(os.path.join(out_dir, 'point_clouds.npy'), P)
     print("Saved '{}'.".format(os.path.join(out_dir, 'point_clouds.npy')))
 
-    np.save(os.path.join(out_dir, 'dictionaries.npy'), A)
-    print("Saved '{}'.".format(os.path.join(out_dir, 'dictionaries.npy')))
+    np.save(os.path.join(out_dir, 'arg_max.npy'), arg_max)
+    print("Saved '{}'.".format(os.path.join(out_dir, 'arg_max.npy')))
 
     np.save(os.path.join(out_dir, 'S_mask.npy'), S_mask)
     print("Saved '{}'.".format(os.path.join(out_dir, 'S_mask.npy')))
